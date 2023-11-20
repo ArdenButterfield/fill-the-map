@@ -67,6 +67,12 @@ function getTileData(tileCoord) {
     return tileData
 }
 
+function getBackgroundColor(x, y) {
+    const gridsize = 4
+    let isTan = Math.floor(x / gridsize) % 2 === Math.floor(y / gridsize) % 2;
+    return isTan ? "beige" : "tan";
+}
+
 function displayTile(tile) {
     let tileData = getTileData(tile);
     currentTile.x = tile.x;
@@ -83,11 +89,7 @@ function displayTile(tile) {
                     if (visitedGrid[y][x]) {
                         color = tileData[y][x];
                     } else {
-                        if (y % 2 === x % 2) {
-                            color = "beige";
-                        } else {
-                            color = "tan";
-                        }
+                        color = getBackgroundColor(x, y);
                     }
                     ctx.fillStyle = color;
                     ctx.fillRect(x, y, 1, 1);

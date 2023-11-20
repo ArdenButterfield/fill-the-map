@@ -72,18 +72,25 @@ function displayTile(tile) {
     currentTile.x = tile.x;
     currentTile.y = tile.y;
     const visitedGrid = visited[getTilename(tile)];
-    for (let map of document.getElementsByClassName("map-expanded")) {
-        for (let y = 0; y < MAP_HEIGHT_PIXELS; y++) {
-            for (let x = 0; x < MAP_WIDTH_PIXELS; x++) {
-                let pos = (y * MAP_WIDTH_PIXELS + x);
-                if (visitedGrid[y][x]) {
-                    map.children[pos].style.backgroundColor = tileData[y][x];
-                } else {
-                    if (y % 2 === x % 2) {
-                        map.children[pos].style.backgroundColor = "beige";
+
+    for (let canvas of document.getElementsByClassName("map-canvas")) {
+        if (canvas.getContext) {
+            const ctx = canvas.getContext("2d");
+            for (let y = 0; y < MAP_HEIGHT_PIXELS; y++) {
+                for (let x = 0; x < MAP_WIDTH_PIXELS; x++) {
+                    let pos = (y * MAP_WIDTH_PIXELS + x);
+                    let color;
+                    if (visitedGrid[y][x]) {
+                        color = tileData[y][x];
                     } else {
-                        map.children[pos].style.backgroundColor = "tan";
+                        if (y % 2 === x % 2) {
+                            color = "beige";
+                        } else {
+                            color = "tan";
+                        }
                     }
+                    ctx.fillStyle = color;
+                    ctx.fillRect(x, y, 1, 1);
                 }
             }
         }
@@ -125,10 +132,12 @@ function visit(tile, pixelY, pixelX) {
         ".....###########.....",
         ".......#######.......",
     ]
+
     let maskCenter = {
         x: 10,
         y: 10
     }
+
     let tileName = getTilename(tile);
     if (!visited.hasOwnProperty(tileName)) {
         visited[tileName] = makeBlankVisitedGrid();
@@ -176,61 +185,10 @@ window.onload = function () {
     } else {
         document.getElementById("title").innerText = "Geolocation is not supported by this browser.";
     }
-    for (let map of document.getElementsByClassName("map-expanded")) {
-        map.style.gridTemplateColumns =`repeat(${MAP_WIDTH_PIXELS},auto)`;
-        for (let i = 0; i < MAP_WIDTH_PIXELS * MAP_HEIGHT_PIXELS; ++i) {
-            let pixel = document.createElement("div");
-            pixel.classList.add("map-pixel")
-            if ((Math.floor(i / MAP_WIDTH_PIXELS) % 2) === (i % MAP_WIDTH_PIXELS) % 2) {
-                pixel.style.backgroundColor = "beige";
-            } else {
-                pixel.style.backgroundColor = "tan";
-            }
-            map.appendChild(pixel);
-        }
+
+    for (let canvas of document.getElementsByClassName("map-canvas")) {
+        canvas.width = MAP_WIDTH_PIXELS;
+        canvas.height = MAP_HEIGHT_PIXELS;
     }
+
 }
-
-/*
-for (let tile of document.getElementsByClassName("tile-in-grid")) {
-    tile.addEventListener("click", (e) => {
-        console.log("tile clicked");
-    })
-}
-
-let mapSelector = document.getElementById("map-selector");
-let isDragging = false;
-let dragging = {
-    down: false,
-    x: 0,
-    y: 0,
-    mapX: 0,
-    mapY: 0
-}
-mapSelector.addEventListener("mousedown", (e) => {
-    dragging.x = e.x;
-    dragging.y = e.y;
-    dragging.down = true;
-})
-
-mapSelector.addEventListener("mousemove", (e) => {
-    if (dragging.down) {
-        dragging.mapX += e.x - dragging.x;
-        dragging.mapY += e.y - dragging.y;
-        mapSelector.firstElementChild.style.transform = "translate3d(" + dragging.mapX + "px, " + dragging.mapY + "px, 0px)"
-        dragging.x = e.x;
-        dragging.y = e.y;
-    }
-})
-
-mapSelector.addEventListener("mouseup", (e) => {
-    dragging.mapX += e.x - dragging.x;
-    dragging.mapY += e.y - dragging.y;
-    mapSelector.firstElementChild.style.transform = "translate3d(" + dragging.mapX + "px, " + dragging.mapY + "px, 0px)"
-    dragging.down = false;
-})
-
-mapSelector.addEventListener("mouseexit", (e) => {
-    dragging.down = false;
-})
-*/

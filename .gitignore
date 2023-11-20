@@ -1,0 +1,16 @@
+*.png
+Unititled.ipynb
+secrets.py
+canopydetection/*.png
+canopydetection/*.jpeg
+canopydetection/*.tif
+canopydetection/detectree2
+canopydetection/predictions
+canopydetection/predictions_geo
+canopydetection/train_outputs
+canopydetection/*.pth
+canopydetection/.ipynb_checkpoints
+.ipynb_checkpoints
+images
+.idea
+__pycache__

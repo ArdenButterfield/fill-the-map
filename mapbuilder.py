@@ -20,13 +20,13 @@ class MapBuilder:
 
     images_dir = "./images/"
 
-    WE_ARE_HERE = geopy.point.Point(45.54341, -122.62833)
-    HELENS = geopy.point.Point(46.21, -122.2387)
-    SEATTLE = geopy.point.Point(47.60282, -122.33752)
-    EUGENE = geopy.point.Point(44.0403, -123.1055)
-    HONOLULU = geopy.point.Point(21.27349, -157.82388)
-    FOREST_GROVER = geopy.point.Point(45.5289,-123.1181)
-    SPRINGFIELD = geopy.point.Point(44.0498,-123.0301)
+    WE_ARE_HERE = geopy.point.Point(45.54, -122.62)
+    HELENS = geopy.point.Point(46.21, -122.23)
+    SEATTLE = geopy.point.Point(47.60, -122.33)
+    EUGENE = geopy.point.Point(44.04, -123.10)
+    HONOLULU = geopy.point.Point(21.27, -157.82)
+    FOREST_GROVER = geopy.point.Point(45.52,-123.11)
+    SPRINGFIELD = geopy.point.Point(44.04,-123.03)
     def api_call(self, x, y, style, savedir, zoom=14):
         savepath = f"{self.images_dir}{savedir}/{zoom}-{x}-{y}.png"
         if os.path.isfile(savepath):
